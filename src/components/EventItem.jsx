@@ -15,11 +15,11 @@ export const EventItem = ({ event, categories }) => {
         mt={4}
         alignItems="center"
         justifyContent={"space-evenly"}
-        backgroundColor="blue.200"
+        backgroundColor="purple.800"
         p={4}
         h={200}
         border="2px"
-        borderColor="blue.500"
+        borderColor="purple.900"
         borderRadius={8}
         transition="transform 0.5s"
         _hover={{
@@ -38,10 +38,10 @@ export const EventItem = ({ event, categories }) => {
           fontSize={{ base: 10, sm: 10, md: 10, lg: 12, xl: 14 }}
           textAlign={"center"}
         >
-          <Text color="blue.600" fontWeight="bold">
+          <Text color="purple.600" fontWeight="bold">
             {event.title.toUpperCase()}
           </Text>
-          <Text color="blue.500" fontWeight="bold">
+          <Text color="white" fontWeight="bold">
             {event.description}
           </Text>
           <Text color="white" fontWeight="500">

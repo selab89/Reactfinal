@@ -4,7 +4,7 @@ export const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: "blue.100", // Pas deze waarde aan naar de gewenste achtergrondkleur
+        bg: "purple.800", // Pas deze waarde aan naar de gewenste achtergrondkleur
       },
     },
   },
@@ -13,15 +13,15 @@ export const theme = extendTheme({
       baseStyle: {
         control: {
           _checked: {
-            bg: "blue.500", // De kleur wanneer de radio button is geselecteerd
-            borderColor: "blue.500",
+            bg: "purple.500", // De kleur wanneer de radio button is geselecteerd
+            borderColor: "purple.500",
             _before: {
-              bg: "blue.500",
+              bg: "white",
             },
           },
           _unchecked: {
-            bg: "blue.500", // De kleur wanneer de radio button niet is geselecteerd
-            borderColor: "blue.500",
+            bg: "white", // De kleur wanneer de radio button niet is geselecteerd
+            borderColor: "purple.500",
           },
           _hover: {
             bg: "blue.500", // De kleur bij hoveren

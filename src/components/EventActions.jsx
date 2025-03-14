@@ -25,7 +25,7 @@ export const EventActions = ({ onBack, onEdit, onDelete }) => {
         onClick={onBack}
         w={buttonWidth}
         variant="outline"
-        bgColor="blue.500"
+        bgColor="purple.500"
         color="white"
         fontSize={fontSize}
       >
@@ -36,7 +36,7 @@ export const EventActions = ({ onBack, onEdit, onDelete }) => {
         w={buttonWidth}
         variant="outline"
         color="white"
-        backgroundColor="green.500"
+        backgroundColor="blue.500"
         fontSize={fontSize}
       >
         Edit

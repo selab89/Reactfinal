@@ -157,7 +157,7 @@ export const EditEventModal = ({
               </Select>
             </FormControl>
             <ButtonGroup spacing={4} mt={4}>
-              <Button type="submit" colorScheme="blue" width={"full"}>
+              <Button type="submit" colorScheme="purple" width={"full"}>
                 Save Changes
               </Button>
               <Button

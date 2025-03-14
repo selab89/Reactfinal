@@ -67,10 +67,10 @@ export const EventsPage = () => {
   return (
     <Box margin={4}>
       <Stack spacing={4}>
-        <Heading color={"blue.600"} textAlign={"center"}>
-          List of awesome events
+        <Heading color={"white"} textAlign={"center"}>
+          Event List
         </Heading>
-        <Text color={"blue.600"} textAlign={"center"} fontSize={"sm"}>
+        <Text color={"white"} textAlign={"center"} fontSize={"sm"}>
           Search for specific events, filter by category or add a new one
         </Text>
         <Center>
@@ -84,7 +84,7 @@ export const EventsPage = () => {
             w={"80%"}
             m={2}
             border={"2px"}
-            borderColor={"blue.500"}
+            borderColor={"purple.500"}
           />
         </Center>
         <Center>

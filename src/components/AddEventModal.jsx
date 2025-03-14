@@ -213,7 +213,7 @@ export const AddEventModal = ({
             </FormControl>
             <Box display="flex" justifyContent="center">
               <ButtonGroup mt={4} mb={4}>
-                <Button type="submit" colorScheme="green" width={"full"}>
+                <Button type="submit" colorScheme="blue" width={"full"}>
                   Add Event
                 </Button>
                 <Spacer />

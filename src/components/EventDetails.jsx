@@ -38,19 +38,19 @@ export const EventDetails = ({ event, categories, users }) => {
 
   return (
     <Box>
-      <Heading textAlign={"center"} mt={8} mb={4} color={"blue.600"}>
+      <Heading textAlign={"center"} mt={8} mb={4} color={"purple.600"}>
         {event.title.toUpperCase()}
       </Heading>
       <Flex
         alignItems={"center"}
         justifyContent={"space-around"}
         border={"2px"}
-        borderColor={"blue.500"}
+        borderColor={"purple.500"}
         borderRadius={"50px"}
         m={"auto"}
         w={"40%"}
         h={"auto"}
-        backgroundColor={"blue.200"}
+        backgroundColor={"purple.800"}
         color={"white"}
       >
         <Box m={"auto"} mb={2}>
@@ -72,7 +72,7 @@ export const EventDetails = ({ event, categories, users }) => {
               fontSize={fontSize}
               fontWeight={"bold"}
               textAlign={"center"}
-              color={"blue.500"}
+              color={"purple.500"}
             >
               {event.description.toUpperCase()}
             </Text>
