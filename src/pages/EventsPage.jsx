@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, Box, Heading, Input, Stack, Center } from "@chakra-ui/react";
+import { Text, Box, Heading, Input, Stack, Center, Spinner } from "@chakra-ui/react";
 import { EventList } from "../components/EventList";
 import { SearchFilter } from "../components/SearchFilter";
 
@@ -9,7 +9,9 @@ export const EventsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [loading, setLoading] = useState(true); // Adding loading state
 
+  // Fetch events and categories
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -22,6 +24,8 @@ export const EventsPage = () => {
         setFilteredEvents(data);
       } catch (error) {
         console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -42,18 +46,23 @@ export const EventsPage = () => {
     fetchCategories();
   }, []);
 
+  // Filter events based on search query and selected category
   useEffect(() => {
+    if (events.length === 0) return; // Only filter if events are loaded
+
     let filtered = events;
 
+    // Filter by search query (event title)
     if (searchQuery) {
       filtered = filtered.filter((event) =>
         event.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
+    // Filter by selected category
     if (selectedCategory) {
       filtered = filtered.filter((event) =>
-        event.categoryIds.includes(parseInt(selectedCategory))
+        event.categoryIds.includes(parseInt(selectedCategory)) // Ensure comparison is with an integer
       );
     }
 
@@ -71,8 +80,10 @@ export const EventsPage = () => {
           Event List
         </Heading>
         <Text color={"white"} textAlign={"center"} fontSize={"sm"}>
-          Search for specific events, filter by category or add a new one
+          Search for specific events, filter by category, or add a new one.
         </Text>
+
+        {/* Search bar */}
         <Center>
           <Input
             type="text"
@@ -87,6 +98,8 @@ export const EventsPage = () => {
             borderColor={"purple.500"}
           />
         </Center>
+
+        {/* Category filter */}
         <Center>
           <SearchFilter
             categories={categories}
@@ -96,9 +109,14 @@ export const EventsPage = () => {
         </Center>
       </Stack>
 
-      <EventList events={filteredEvents} categories={categories} />
+      {/* Loading state */}
+      {loading ? (
+        <Center>
+          <Spinner size="xl" />
+        </Center>
+      ) : (
+        <EventList events={filteredEvents} categories={categories} />
+      )}
     </Box>
   );
 };
-
-

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -25,10 +25,24 @@ export const EditEventModal = ({
   users,
   onSave,
 }) => {
+  // Bijwerken van het evenement
   const [updatedEvent, setUpdatedEvent] = useState(event);
+
+  useEffect(() => {
+    // Bijwerken van de staat als het evenement verandert
+    setUpdatedEvent(event);
+  }, [event]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validatie: Zorg ervoor dat ten minste één categorie is geselecteerd
+    if (updatedEvent.categoryIds.length === 0) {
+      alert('Please select at least one category');
+      return;
+    }
+
+    // Het evenement met de categorieën die door de gebruiker zijn geselecteerd doorgeven
     onSave(updatedEvent);
   };
 
@@ -40,6 +54,7 @@ export const EditEventModal = ({
         <ModalCloseButton />
         <ModalBody textAlign={"center"}>
           <form onSubmit={handleSubmit}>
+            {/* Titel */}
             <FormControl>
               <FormLabel>Title</FormLabel>
               <Input
@@ -53,6 +68,8 @@ export const EditEventModal = ({
                 }
               />
             </FormControl>
+
+            {/* Beschrijving */}
             <FormControl mt={4}>
               <FormLabel>Description</FormLabel>
               <Input
@@ -66,6 +83,8 @@ export const EditEventModal = ({
                 }
               />
             </FormControl>
+
+            {/* Afbeelding URL */}
             <FormControl mt={4}>
               <FormLabel>Image URL</FormLabel>
               <Input
@@ -79,6 +98,8 @@ export const EditEventModal = ({
                 }
               />
             </FormControl>
+
+            {/* Starttijd */}
             <FormControl mt={4}>
               <FormLabel>Start Time</FormLabel>
               <Input
@@ -92,6 +113,8 @@ export const EditEventModal = ({
                 }
               />
             </FormControl>
+
+            {/* Eindtijd */}
             <FormControl mt={4}>
               <FormLabel>End Time</FormLabel>
               <Input
@@ -105,6 +128,8 @@ export const EditEventModal = ({
                 }
               />
             </FormControl>
+
+            {/* Locatie */}
             <FormControl mt={4}>
               <FormLabel>Location</FormLabel>
               <Input
@@ -118,6 +143,8 @@ export const EditEventModal = ({
                 }
               />
             </FormControl>
+
+            {/* Categorieën */}
             <FormControl mt={4}>
               <FormLabel>Categories</FormLabel>
               <CheckboxGroup
@@ -125,7 +152,7 @@ export const EditEventModal = ({
                 onChange={(selectedCategories) =>
                   setUpdatedEvent({
                     ...updatedEvent,
-                    categoryIds: selectedCategories.map(Number),
+                    categoryIds: selectedCategories.map(Number), // Zorg ervoor dat de IDs in de juiste vorm zijn
                   })
                 }
               >
@@ -138,6 +165,8 @@ export const EditEventModal = ({
                 </Stack>
               </CheckboxGroup>
             </FormControl>
+
+            {/* Gecreëerd door */}
             <FormControl mt={4}>
               <FormLabel>Created By</FormLabel>
               <Select
@@ -145,7 +174,7 @@ export const EditEventModal = ({
                 onChange={(e) =>
                   setUpdatedEvent({
                     ...updatedEvent,
-                    createdBy: parseInt(e.target.value),
+                    createdBy: parseInt(e.target.value), // Zorg ervoor dat we de ID als nummer doorgeven
                   })
                 }
               >
@@ -156,6 +185,8 @@ export const EditEventModal = ({
                 ))}
               </Select>
             </FormControl>
+
+            {/* Opslaan en Annuleren */}
             <ButtonGroup spacing={4} mt={4}>
               <Button type="submit" colorScheme="purple" width={"full"}>
                 Save Changes

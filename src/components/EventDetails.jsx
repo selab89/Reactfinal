@@ -36,6 +36,11 @@ export const EventDetails = ({ event, categories, users }) => {
     xl: "50px",
   });
 
+  // Tijdelijke console logs voor debugging (verwijder deze zodra het werkt)
+  console.log("Event Categories:", event.categoryIds);  // Log de categoryIds van het event
+  console.log("Categories:", categories);  // Log de lijst van categorieën
+  console.log("Creator Info:", creator);  // Log de informatie over de creator
+
   return (
     <Box>
       <Heading textAlign={"center"} mt={8} mb={4} color={"purple.600"}>
@@ -74,7 +79,7 @@ export const EventDetails = ({ event, categories, users }) => {
               textAlign={"center"}
               color={"purple.500"}
             >
-              {event.description.toUpperCase()}
+              {event.description ? event.description.toUpperCase() : "No description available"}
             </Text>
             <Text fontSize={fontSize} color={"white"} fontWeight="500">
               Date: {eventStartDate(event)}
@@ -86,7 +91,7 @@ export const EventDetails = ({ event, categories, users }) => {
               Categories: {eventCategories(event, categories)}
             </Text>
             <Text fontSize={fontSize} color={"white"} fontWeight="500">
-              Location: {event.location}
+              Location: {event.location || "No location available"}
             </Text>
             <Text fontSize={fontSize} color={"white"} fontWeight="500">
               Created By: {creator ? creator.name : "Unknown"}
@@ -94,7 +99,7 @@ export const EventDetails = ({ event, categories, users }) => {
             {creator && (
               <Center>
                 <Image
-                  src={creator.image}
+                  src={creator.image || 'path/to/default/image.jpg'}  // Gebruik een standaard afbeelding als er geen afbeelding van de creator is
                   alt={creator.name}
                   style={{ maxWidth: creatorImageMaxWidth, borderRadius: "50%" }}
                   mb={2}

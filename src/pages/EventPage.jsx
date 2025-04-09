@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Center, useToast } from "@chakra-ui/react";
+import { Box, Center, useToast, Image } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import { EventDetails } from "../components/EventDetails";
 import { EventActions } from "../components/EventActions";
@@ -145,8 +145,21 @@ export const EventPage = () => {
   }
 
   return (
-    <Box>
-      <EventDetails event={event} categories={categories} users={users} />
+    <Box overflowX="auto" padding={{ base: "4", md: "8" }}>
+      {/* Ensure that images and event details are responsive */}
+      <Box display="flex" flexDirection={{ base: "column", lg: "row" }} alignItems="center" justifyContent="center">
+        <Image
+          src={event.imageUrl}
+          alt={event.title}
+          boxSize={{ base: "100%", md: "300px", lg: "400px" }}
+          objectFit="cover"
+          borderRadius="md"
+        />
+        <Box ml={{ lg: "8" }} mt={{ base: "4", lg: "0" }} flex="1">
+          <EventDetails event={event} categories={categories} users={users} />
+        </Box>
+      </Box>
+
       <Center>
         <EventActions
           onBack={() => navigate("/")}
@@ -154,6 +167,7 @@ export const EventPage = () => {
           onDelete={handleDelete}
         />
       </Center>
+
       {isModalOpen && (
         <EditEventModal
           isOpen={isModalOpen}
@@ -167,4 +181,3 @@ export const EventPage = () => {
     </Box>
   );
 };
-

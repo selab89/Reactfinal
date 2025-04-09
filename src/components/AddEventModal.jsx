@@ -1,230 +1,129 @@
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  Input,
-  ButtonGroup,
-  Button,
-  Spacer,
-  Checkbox,
-  CheckboxGroup,
-  Stack,
-  RadioGroup,
-  Radio,
-} from "@chakra-ui/react";
+import React, { useState, useEffect } from 'react';
 
-export const AddEventModal = ({
-  isOpen,
-  onClose,
-  setEvents,
-  setFilteredEvents,
-  toast,
-}) => {
-  const [newEvent, setNewEvent] = useState({
-    title: "",
-    description: "",
-    image: "",
-    startTime: "",
-    endTime: "",
-    location: "",
-    createdBy: "",
-    categoryIds: [],
-  });
+const AddEventModal = ({ categories, onSave, eventData }) => {
+    const [eventTitle, setEventTitle] = useState('');
+    const [eventDescription, setEventDescription] = useState('');
+    const [eventLocation, setEventLocation] = useState('');
+    const [eventStartTime, setEventStartTime] = useState('');
+    const [eventEndTime, setEventEndTime] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const [categories, setCategories] = useState([]);
-  const [users, setUsers] = useState([]);
+    // Vul de velden met de huidige event data als we een event bewerken
+    useEffect(() => {
+        if (eventData) {
+            setEventTitle(eventData.title);
+            setEventDescription(eventData.description);
+            setEventLocation(eventData.location);
+            setEventStartTime(eventData.startTime);
+            setEventEndTime(eventData.endTime);
+            setSelectedCategories(eventData.categoryIds || []);
+        }
+    }, [eventData]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/categories");
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
+    // Deze functie wordt aangeroepen wanneer de gebruiker op de opslaan-knop klikt
+    const handleSave = () => {
+        // Controleer of alle velden zijn ingevuld
+        if (!eventTitle || !eventDescription || !eventLocation || !eventStartTime || !eventEndTime) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        const newEvent = {
+            title: eventTitle,
+            description: eventDescription,
+            location: eventLocation,
+            startTime: eventStartTime,
+            endTime: eventEndTime,
+            categoryIds: [...new Set(selectedCategories)], // Verwijder duplicaten
+        };
+
+        // Sla het evenement op door de onSave-functie aan te roepen
+        onSave(newEvent);
     };
 
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/users");
-        const data = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
+    // Functie om de categorieën bij te werken wanneer een checkbox wordt ingeschakeld/uitgeschakeld
+    const handleCategoryChange = (categoryId) => {
+        setSelectedCategories((prevSelectedCategories) => {
+            if (prevSelectedCategories.includes(categoryId)) {
+                // Verwijder de categorie als deze al is geselecteerd
+                return prevSelectedCategories.filter((id) => id !== categoryId);
+            } else {
+                // Voeg de categorie toe als deze nog niet is geselecteerd
+                return [...prevSelectedCategories, categoryId];
+            }
+        });
     };
 
-    fetchCategories();
-    fetchUsers();
-  }, []);
-
-  const handleInputChange = (e) => {
-    setNewEvent({
-      ...newEvent,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleCategoryChange = (selectedCategories) => {
-    setNewEvent({
-      ...newEvent,
-      categoryIds: selectedCategories.map(Number),
-    });
-  };
-
-  const handleAddEventSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3000/events", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newEvent),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add event");
-      }
-      const addedEvent = await response.json();
-      setEvents((prevEvents) => [...prevEvents, addedEvent]);
-      setFilteredEvents((prevEvents) => [...prevEvents, addedEvent]);
-      toast({
-        title: "Event added successfully",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      onClose();
-    } catch (error) {
-      console.error("Error adding event:", error);
-      toast({
-        title: "Error adding event",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Add Event</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <form onSubmit={handleAddEventSubmit}>
-            <FormControl mb={4}>
-              <FormLabel>Title</FormLabel>
-              <Input
-                type="text"
-                required
-                name="title"
-                value={newEvent.title}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>Description</FormLabel>
-              <Input
-                type="text"
-                required
-                name="description"
-                value={newEvent.description}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>Image URL</FormLabel>
-              <Input
-                type="text"
-                required
-                name="image"
-                value={newEvent.image}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>Start Time</FormLabel>
-              <Input
-                type="datetime-local"
-                required
-                name="startTime"
-                value={newEvent.startTime}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>End Time</FormLabel>
-              <Input
-                type="datetime-local"
-                required
-                name="endTime"
-                value={newEvent.endTime}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>Location</FormLabel>
-              <Input
-                type="text"
-                required
-                name="location"
-                value={newEvent.location}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>Categories</FormLabel>
-              <CheckboxGroup onChange={handleCategoryChange}>
-                <Stack>
-                  {categories.map((category) => (
-                    <Checkbox key={category.id} value={category.id.toString()}>
-                      {category.name}
-                    </Checkbox>
-                  ))}
-                </Stack>
-              </CheckboxGroup>
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>Created By</FormLabel>
-              <RadioGroup
-                name="createdBy"
-                onChange={(value) =>
-                  setNewEvent({ ...newEvent, createdBy: Number(value) })
-                }
-              >
-                <Stack direction="row">
-                  {users.map((user) => (
-                    <Radio key={user.id} value={user.id.toString()}>
-                      {user.name}
-                    </Radio>
-                  ))}
-                </Stack>
-              </RadioGroup>
-            </FormControl>
-            <Box display="flex" justifyContent="center">
-              <ButtonGroup mt={4} mb={4}>
-                <Button type="submit" colorScheme="blue" width={"full"}>
-                  Add Event
-                </Button>
-                <Spacer />
-                <Button onClick={onClose} width={"full"}>
-                  Cancel
-                </Button>
-              </ButtonGroup>
-            </Box>
-          </form>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-  );
+    return (
+        <div className="modal">
+            <h2>{eventData ? 'Edit Event' : 'Add New Event'}</h2>
+            <form>
+                <div>
+                    <label htmlFor="eventTitle">Event Title</label>
+                    <input
+                        id="eventTitle"
+                        type="text"
+                        value={eventTitle}
+                        onChange={(e) => setEventTitle(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="eventDescription">Event Description</label>
+                    <textarea
+                        id="eventDescription"
+                        value={eventDescription}
+                        onChange={(e) => setEventDescription(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="eventLocation">Location</label>
+                    <input
+                        id="eventLocation"
+                        type="text"
+                        value={eventLocation}
+                        onChange={(e) => setEventLocation(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="eventStartTime">Start Time</label>
+                    <input
+                        id="eventStartTime"
+                        type="datetime-local"
+                        value={eventStartTime}
+                        onChange={(e) => setEventStartTime(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="eventEndTime">End Time</label>
+                    <input
+                        id="eventEndTime"
+                        type="datetime-local"
+                        value={eventEndTime}
+                        onChange={(e) => setEventEndTime(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <h3>Select Categories:</h3>
+                    {/* Loop over de categorieën en maak checkboxen */}
+                    {categories.map((category) => (
+                        <div key={category.id}>
+                            <input
+                                type="checkbox"
+                                id={`category-${category.id}`}
+                                value={category.id}
+                                checked={selectedCategories.includes(category.id)} // Controleer of de categorie geselecteerd is
+                                onChange={() => handleCategoryChange(category.id)} // Update de geselecteerde categorieën
+                            />
+                            <label htmlFor={`category-${category.id}`}>{category.name}</label>
+                        </div>
+                    ))}
+                </div>
+                <button type="button" onClick={handleSave}>
+                    Save Event
+                </button>
+            </form>
+        </div>
+    );
 };
+
+export default AddEventModal;

@@ -15,6 +15,7 @@ export const EventList = ({ events, categories }) => {
       gap={8}
       m={8}
     >
+      {/* EventItems weergeven */}
       {events.map((event) => (
         <EventItem event={event} categories={categories} key={event.id} />
       ))}

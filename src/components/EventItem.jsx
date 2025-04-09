@@ -10,7 +10,7 @@ import {
 
 export const EventItem = ({ event, categories }) => {
   return (
-    <Link to={`/event/${event.id}`} key={event.id}>
+    <Link to={`/event/${event.id}`}>
       <Flex
         mt={4}
         alignItems="center"
@@ -27,31 +27,33 @@ export const EventItem = ({ event, categories }) => {
           transform: "scale(1.05)",
         }}
       >
+        {/* Afbeelding met fallback als de afbeelding niet beschikbaar is */}
         <Image
-          src={event.image}
+          src={event.image || '/images/default-image.jpg'}  // Vervang door een geldige fallback afbeelding
           alt={event.title}
           boxSize="120px"
           mr={4}
           borderRadius={"50%"}
         />
         <Box
-          fontSize={{ base: 10, sm: 10, md: 10, lg: 12, xl: 14 }}
+          fontSize={{ base: "sm", sm: "md", md: "lg", lg: "xl", xl: "2xl" }}
           textAlign={"center"}
         >
           <Text color="purple.600" fontWeight="bold">
             {event.title.toUpperCase()}
           </Text>
+          {/* Beschrijving met fallback voor lege beschrijving */}
           <Text color="white" fontWeight="bold">
-            {event.description}
+            {event.description ? event.description : "No description available"}
           </Text>
           <Text color="white" fontWeight="500">
-            Date: {eventStartDate(event)}
+            Date: {eventStartDate(event)}  {/* Event start date */}
           </Text>
           <Text color="white" fontWeight="500">
-            Time: {eventStartTime(event)} - {eventEndTime(event)}
+            Time: {eventStartTime(event)} - {eventEndTime(event)}  {/* Event start and end time */}
           </Text>
           <Text color="white" fontWeight="500">
-            Categories: {eventCategories(event, categories).toUpperCase()}
+            Categories: {eventCategories(event, categories).toUpperCase()}  {/* Event categories */}
           </Text>
         </Box>
       </Flex>
