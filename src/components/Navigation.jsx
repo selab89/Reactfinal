@@ -16,9 +16,14 @@ export const Navigation = ({ onAddEvent }) => {
           </Button>
         </Link>
       </Box>
-      <Image src="/images/roundlogo.svg" w={"50px"}></Image>
+      <Image src="/images/roundlogo.svg" w={"50px"} />
       <Box>
-        <Button onClick={onAddEvent} bgColor="blue.500" color="white" variant={"outline"}>
+        {/* Voeg de onClick handler toe voor de Add Event knop */}
+        <Button 
+          onClick={onAddEvent} 
+          bgColor="blue.500" 
+          color="white" 
+          variant={"outline"}>
           Add Event
         </Button>
       </Box>

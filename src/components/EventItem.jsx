@@ -38,22 +38,23 @@ export const EventItem = ({ event, categories }) => {
         <Box
           fontSize={{ base: "sm", sm: "md", md: "lg", lg: "xl", xl: "2xl" }}
           textAlign={"center"}
+          overflow="hidden"  // Zorgt ervoor dat tekst niet buiten de box komt
         >
-          <Text color="purple.600" fontWeight="bold">
+          <Text color="purple.600" fontWeight="bold" noOfLines={1}>
             {event.title.toUpperCase()}
           </Text>
           {/* Beschrijving met fallback voor lege beschrijving */}
-          <Text color="white" fontWeight="bold">
+          <Text color="white" fontWeight="bold" noOfLines={2} isTruncated>
             {event.description ? event.description : "No description available"}
           </Text>
-          <Text color="white" fontWeight="500">
-            Date: {eventStartDate(event)}  {/* Event start date */}
+          <Text color="white" fontWeight="500" noOfLines={1}>
+            Date: {eventStartDate(event)} {/* Event start date */}
           </Text>
-          <Text color="white" fontWeight="500">
-            Time: {eventStartTime(event)} - {eventEndTime(event)}  {/* Event start and end time */}
+          <Text color="white" fontWeight="500" noOfLines={1}>
+            Time: {eventStartTime(event)} - {eventEndTime(event)} {/* Event start and end time */}
           </Text>
-          <Text color="white" fontWeight="500">
-            Categories: {eventCategories(event, categories).toUpperCase()}  {/* Event categories */}
+          <Text color="white" fontWeight="500" noOfLines={1}>
+            Categories: {eventCategories(event, categories).toUpperCase()} {/* Event categories */}
           </Text>
         </Box>
       </Flex>

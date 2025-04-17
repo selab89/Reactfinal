@@ -37,9 +37,9 @@ export const EventDetails = ({ event, categories, users }) => {
   });
 
   // Tijdelijke console logs voor debugging (verwijder deze zodra het werkt)
-  console.log("Event Categories:", event.categoryIds);  // Log de categoryIds van het event
-  console.log("Categories:", categories);  // Log de lijst van categorieën
-  console.log("Creator Info:", creator);  // Log de informatie over de creator
+  console.log("Event Categories:", event.categoryIds);
+  console.log("Categories:", categories);
+  console.log("Creator Info:", creator);
 
   return (
     <Box>
@@ -59,19 +59,16 @@ export const EventDetails = ({ event, categories, users }) => {
         color={"white"}
       >
         <Box m={"auto"} mb={2}>
+          {/* Aangepast plaatje */}
           <Image
             src={event.image}
             alt={event.title}
-            maxWidth={{
-              base: "100px",
-              sm: "200px",
-              md: "300px",
-              lg: "400px",
-              xl: "500px",
-            }}
-            borderRadius={"40px"}
-            m={6}
+            width="100%"
+            height="auto"
+            borderRadius="40px"
+            margin={0}
           />
+
           <Stack spacing={3} m={"auto"} textAlign={"center"}>
             <Text
               fontSize={fontSize}
@@ -99,7 +96,7 @@ export const EventDetails = ({ event, categories, users }) => {
             {creator && (
               <Center>
                 <Image
-                  src={creator.image || 'path/to/default/image.jpg'}  // Gebruik een standaard afbeelding als er geen afbeelding van de creator is
+                  src={creator.image || 'path/to/default/image.jpg'}
                   alt={creator.name}
                   style={{ maxWidth: creatorImageMaxWidth, borderRadius: "50%" }}
                   mb={2}
