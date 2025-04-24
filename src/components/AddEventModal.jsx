@@ -18,33 +18,15 @@ import {
   useToast
 } from '@chakra-ui/react';
 
-const AddEventModal = ({ isOpen, onClose, onSave, eventData }) => {
+const AddEventModal = ({ isOpen, onClose, onSave, eventData, categories }) => {
   const [eventTitle, setEventTitle] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [eventLocation, setEventLocation] = useState('');
   const [eventStartTime, setEventStartTime] = useState('');
   const [eventEndTime, setEventEndTime] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [categories, setCategories] = useState([]);
 
   const toast = useToast();
-
-  // ✅ Haal categorieën op via de proxy
-  useEffect(() => {
-    fetch('/categories')
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => {
-        console.error('Failed to fetch categories:', err);
-        toast({
-          title: 'Error loading categories',
-          description: 'Check if the backend server is running.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      });
-  }, []);
 
   // ✅ Vul data in bij edit
   useEffect(() => {

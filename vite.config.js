@@ -6,11 +6,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/categories': {
-        target: 'http://localhost:5190',
+        target: 'http://localhost:3000', // <-- aangepast van 5190 naar 3000
         changeOrigin: true,
-        // Rewrite is niet nodig als je fetch exact '/categories' is
       },
     },
   },
 })
+
 

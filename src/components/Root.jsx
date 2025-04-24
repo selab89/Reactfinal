@@ -15,11 +15,10 @@ export const Root = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // URL aangepast naar de juiste poort (5190)
-        const res = await fetch('http://localhost:5190/categories');
+        const res = await fetch('http://localhost:3000/categories');
         if (!res.ok) throw new Error('Failed to fetch categories');
         const data = await res.json();
-        setCategories(data);  // Categorieën worden in de staat gezet
+        setCategories(data);
       } catch (error) {
         console.error(error);
         toast({
@@ -33,32 +32,55 @@ export const Root = () => {
     };
 
     fetchCategories();
-  }, []);  // Dit wordt één keer uitgevoerd bij het laden van de pagina
+  }, []);
 
-  // ✨ Wanneer op "Add Event" wordt geklikt
   const handleAddEvent = () => {
     setShowModal(true);
   };
 
-  // ❌ Sluit de modal
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  // ✅ Opslaan van een nieuw event
-  const handleSaveEvent = (newEvent) => {
-    setEvents((prev) => [...prev, newEvent]);
-    setFilteredEvents((prev) => [...prev, newEvent]);
+  // ✅ Event opslaan in de database + in state
+  const handleSaveEvent = async (newEvent) => {
+    try {
+      const response = await fetch('http://localhost:3000/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newEvent),
+      });
 
-    toast({
-      title: 'Event toegevoegd',
-      description: `"${newEvent.title}" is succesvol opgeslagen.`,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
+      if (!response.ok) {
+        throw new Error('Event kon niet worden opgeslagen in de database');
+      }
 
-    setShowModal(false);
+      const savedEvent = await response.json();
+
+      setEvents((prev) => [...prev, savedEvent]);
+      setFilteredEvents((prev) => [...prev, savedEvent]);
+
+      toast({
+        title: 'Event toegevoegd',
+        description: `"${savedEvent.title}" is succesvol opgeslagen.`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      setShowModal(false);
+    } catch (error) {
+      console.error('Fout bij opslaan event:', error);
+      toast({
+        title: 'Fout bij opslaan',
+        description: 'Het event kon niet worden opgeslagen.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -70,8 +92,8 @@ export const Root = () => {
           isOpen={showModal}
           onClose={handleCloseModal}
           onSave={handleSaveEvent}
-          categories={categories}  // Geef de categorieën door die we hebben opgehaald
-          eventData={null} // Geen bestaande eventdata omdat het een nieuw event betreft
+          categories={categories}
+          eventData={null}
         />
       )}
     </Box>

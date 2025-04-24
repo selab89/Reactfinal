@@ -6,14 +6,13 @@ export const SearchFilter = ({
   selectedCategory,
   setSelectedCategory,
 }) => {
-  // Zorg ervoor dat de selectedCategory altijd een string is
   const handleCategoryChange = (value) => {
-    setSelectedCategory(value ? value.toString() : "");  // Zet de waarde om naar string of leeg voor 'All'
+    setSelectedCategory(value ? value.toString() : "");
   };
 
   return (
     <RadioGroup onChange={handleCategoryChange} value={selectedCategory}>
-      <Stack direction="row">
+      <Stack direction="row" wrap="wrap" spacing={4} justify="center">
         <Radio value="">All</Radio>
         {categories.map((category) => (
           <Radio key={category.id} value={category.id.toString()}>
